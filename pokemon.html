@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <title>Mimikkyu</title>
+</head>
+<body class="back">
+    <style>
+        body{
+            background-color: rgb(222, 211, 130);
+        }
+        .pokeimg1{
+            width: 250px;
+            height: 100px;
+            position: absolute;
+            color: white;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-shadow: 1px 1px 1px black;
+        }
+        button{
+            width: 100px;
+            height: 60px;
+            background-color: sandybrown;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 30px;
+            border-color: yellowgreen;
+            font-size: 10px;
+            line-height: 32px;
+            text-transform: uppercase;
+            position: absolute;
+            left: 450px;
+            top: 410px;
+        }
+        .placeholder {
+            width: 130px;
+            height: 60px;
+            position: absolute;
+            top: 551px;
+            left: 105px;
+            font-size: 25px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border-radius: 10px;
+            background-color: transparent;
+            text-align: center;
+            text-shadow: 1px;
+    
+        }
+        .pokeimg{
+            width: 245px;
+            height: 250px;
+            position: absolute;
+            top: 500px;
+            left: 300px;
+        }
+        .pokeimg{
+            position: absolute;
+            top: 80px;
+            left: 100px;
+            width: 250px;
+            height: 250px;
+        }
+    </style>
+    <img src="/Users/afsca/Downloads/fotos html/mimikkyufonfo.png" alt="pokedex" width="100%">
+    <input type="text" placeholder="pikachu" id="pokeName" class="placeholder">
+    <img src="/Users/afsca/Downloads/fotos html/pokeball.png" alt="pokeBola" id="pokeimg" width="150%" style="left: 1200px; top: 10px;"class="pokeimg">
+
+
+    <div id="pokename" class="pokeimg" style="left: 50px; top: 20px; font-size: 90px;">Mimikkyu</div>
+    <div id="pokeHE" class="pokeimg" style="left: 500px; top: 350px; font-size: 20px;">Peso</div>
+    <div id="pokeWE" class="pokeimg" style="left: 700px; top: 350px; font-size: 20px;">Altura</div>
+    <div id="pokeType" class="pokeimg" style="left: 900px; top: 350px; font-size: 20px;">Tipo</div>
+    <div id="pokeItem" class="pokeimg" style="left: 900px; top: 250px; font-size: 20px;">Item</div>
+    <div id="pokeMove1" class="pokeimg" style="left: 80px; top: 150px; font-size: 20px;">Movimiento 1</div>
+    <div id="pokeMove2" class="pokeimg" style="left: 80px; top: 300px; font-size: 20px;">Movimiento 2</div>
+    <div id="pokeMove3" class="pokeimg" style="left: 80px; top: 450px; font-size: 20px;">Movimiento 3</div>
+    <div id="pokeMove4" class="pokeimg" style="left: 80px; top: 600px; font-size: 20px;">Movimiento 4</div>
+   
+    <button onclick="fetchpokemon()" class="button"><img src="pokebola.jpg" style="height: 80%; width:80%"></button>
+    <div class="grafica">
+       <canvas id="miCamvas">
+       </canvas>
+    </div>
+    <script>
+        const fetchPokemon = () => {
+            const pokeNameInput = document.getElementById("pokeName");
+            let pokeName = pokeNameInput.value.toLowerCase();
+            const url = `https://pokeapi.co/api/v2/pokemon/${pokeName}`;
+
+            fetch(url)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    console.log(data);
+
+                    let pokeImgSrc = data.sprites.front_default;
+                    document.getElementById('pokeImg').src = pokeImgSrc;
+
+                    let name = document.getElementById('pokename');
+                    name.innerHTML = `Name: ${data.forms[0].name}`;
+
+                    let element1 = document.getElementById('pokeHe');
+                    element1.innerHTML = `Height: ${data.height}`;
+
+                    let element2 = document.getElementById('pokeWe');
+                    element2.innerHTML = `Weight: ${data.weight}`;
+
+                    let element3 = document.getElementById('pokeorder');
+                    element3.innerHTML = `Order: #${data.order}`;
+
+                    let element4 = document.getElementById('pokeid');
+                    element4.innerHTML = `Id: #${data.id}`;
+
+                    let element5 = document.getElementById('pokeitem');
+                    element5.innerHTML = `Ability: ${data.abilities[0].ability.name}`;
+
+                    let element6 = document.getElementById('poketype');
+                    element6.innerHTML = `Type: ${data.types[0].type.name}`;
+
+                    let element7 = document.getElementById('pokemove1');
+                    element7.innerHTML = `Move 1: ${data.moves[0].move.name}`;
+
+                    let element8 = document.getElementById('pokemove2');
+                    element8.innerHTML = `Move 2: ${data.moves[1].move.name}`;
+
+                    let element9 = document.getElementById('pokemove3');
+                    element9.innerHTML = `Move 3: ${data.moves[2] ? data.moves[2].move.name : ''}`;
+
+                    let element10 = document.getElementById('pokemove4');
+                    element10.innerHTML = `Move 4: ${data.moves[3] ? data.moves[3].move.name : ''}`;
+
+                    const miCanvas = document.getElementById("miCanvas").getContext("2d");
+                    if (window.miCanva !== undefined) {
+                        window.miCanva.destroy();
+                    }
+                    window.miCanva = new Chart(miCanvas, {
+                        type: "bar",
+                        data: {
+                            labels:["HP", "Attack", "Defense", "Special-A", "Special-D", "Speed"],
+                            datasets:[{
+                                label: data.forms[0].name,
+                                backgroundColor: 'rgba(54,162,235,1)',
+                                data:[
+                                    data.stats[0].base_stat,
+                                    data.stats[1].base_stat,
+                                    data.stats[2].base_stat,
+                                    data.stats[3].base_stat,
+                                    data.stats[4].base_stat,
+                                    data.stats[5].base_stat
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.5)',
+                                    'rgba(54, 162, 235, 0.5)',
+                                    'rgba(255, 206, 86, 0.5)',
+                                    'rgba(75, 192, 192, 0.5)',
+                                    'rgba(153, 102, 255, 0.5)',
+                                    'rgba(255, 159, 64, 0.5)'
+                                ]
+                            }]
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    alert('Error fetching Pokemon data. Please try again.');
+                });
+        }
+    </script>
+    <script src="Chart.js"></script>
+</body>
+</html>
